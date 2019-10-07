@@ -9,17 +9,17 @@ void Tests1()
     int n;
     cout << "Size A = ";
     cin >> n;
-    TMatrix<int> A(n);
+    TMatrix<double> A(n);
     cout << "A = " << endl;
     cin >> A;
 
     cout << "Size B = ";
     cin >> n;
-    TMatrix<int> B(n);
+    TMatrix<double> B(n);
     cout << "B = " << endl;
     cin >> B;
     cout << "A + B" << endl;
-    TMatrix<int> C(n);
+    TMatrix<double> C(n);
     try
     {
         C = A + B;
@@ -38,18 +38,18 @@ void Tests2()
     int n;
     cout << "Size A = ";
     cin >> n;
-    TMatrix<int> A(n);
+    TMatrix<double> A(n);
     cout << "A = " << endl;
     cin >> A;
 
     cout << "Size B = ";
     cin >> n;
-    TMatrix<int> B(n);
+    TMatrix<double> B(n);
     cout << "B = " << endl;
     cin >> B;
 
     cout << "A - B" << endl;
-    TMatrix<int> C(n);
+    TMatrix<double> C(n);
     try
     {
         C = A - B;
@@ -68,18 +68,18 @@ void Tests3()
     int n;
     cout << "Size A = ";
     cin >> n;
-    TMatrix<int> A(n);
+    TMatrix<double> A(n);
     cout << "A = " << endl;
     cin >> A;
 
     cout << "Size B = ";
     cin >> n;
-    TMatrix<int> B(n);
+    TMatrix<double> B(n);
     cout << "B = " << endl;
     cin >> B;
 
     cout << "A * B" << endl;
-    TMatrix<int> C(n);
+    TMatrix<double> C(n);
     try
     {
         C = A * B;
@@ -98,16 +98,16 @@ void Tests4()
     int n;
     cout << "Size A = ";
     cin >> n;
-    TMatrix<int> A(n);
+    TMatrix<double> A(n);
     cout << "A = " << endl;
     cin >> A;
 
     cout << "Const = ";
-    int c;
+    double c;
     cin >> c;
 
     cout << "A + const" << endl;
-    TMatrix<int> C(n);
+    TMatrix<double> C(n);
     C = A + c;
     cout << C;
     cout << "Test 4 passed" << endl << endl;
@@ -119,16 +119,16 @@ void Tests5()
     int n;
     cout << "Size A = ";
     cin >> n;
-    TMatrix<int> A(n);
+    TMatrix<double> A(n);
     cout << "A = " << endl;
     cin >> A;
 
     cout << "Const = ";
-    int c;
+    double c;
     cin >> c;
 
     cout << "A - const" << endl;
-    TMatrix<int> C(n);
+    TMatrix<double> C(n);
     C = A - c;
     cout << C;
     cout << "Test 5 passed" << endl << endl;
@@ -140,16 +140,16 @@ void Tests6()
     int n;
     cout << "Size A = ";
     cin >> n;
-    TMatrix<int> A(n);
+    TMatrix<double> A(n);
     cout << "A = " << endl;
     cin >> A;
 
     cout << "Const = ";
-    int c;
+    double c;
     cin >> c;
 
     cout << "A * const" << endl;
-    TMatrix<int> C(n);
+    TMatrix<double> C(n);
     C = A * c;
     cout << C;
     cout << "Test 6 passed" << endl << endl;
@@ -161,18 +161,18 @@ void Tests7()
     int n;
     cout << "Size A = ";
     cin >> n;
-    TMatrix<int> A(n);
+    TMatrix<double> A(n);
     cout << "A = " << endl;
     cin >> A;
 
     cout << "Size vec = ";
     cin >> n;
-    TVector<int> v(n);
+    TVector<double> v(n);
     cout << "B = " << endl;
     cin >> v;
 
     cout << "A * vec" << endl;
-    TVector<int> C(n);
+    TVector<double> C(n);
     try
     {
         C = A * v;
@@ -191,13 +191,13 @@ void Tests8()
     int n;
     cout << "Size A = ";
     cin >> n;
-    TMatrix<int> A(n);
+    TMatrix<double> A(n);
     cout << "A = " << endl;
     cin >> A;
 
     cout << "Size B = ";
     cin >> n;
-    TMatrix<int> B(n);
+    TMatrix<double> B(n);
     cout << "B = " << endl;
     cin >> B;
 
@@ -221,13 +221,13 @@ void Tests9()
     int n;
     cout << "Size A = ";
     cin >> n;
-    TMatrix<int> A(n);
+    TMatrix<double> A(n);
     cout << "A = " << endl;
     cin >> A;
 
     cout << "Size B = ";
     cin >> n;
-    TMatrix<int> B(n);
+    TMatrix<double> B(n);
     cout << "B = " << endl;
     cin >> B;
 
