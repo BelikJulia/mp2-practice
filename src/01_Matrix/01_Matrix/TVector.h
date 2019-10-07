@@ -182,7 +182,7 @@ T TVector<T>::operator*(const TVector& tmp)
 template<typename T>
 bool TVector<T>::operator==(const TVector<T>& tmp)const
 {
-    if (this->size != tmp.size)
+    if ((this->size != tmp.size) || (this->startindex != tmp.startindex))
         return false;
     for (int i = 0; i < tmp.size; i++)
         if (this->arr[i] != tmp.arr[i])
@@ -193,7 +193,7 @@ bool TVector<T>::operator==(const TVector<T>& tmp)const
 template<typename T>
 bool TVector<T>::operator!=(const TVector<T>& tmp)const
 {
-    if (this->size != tmp.size)
+    if ((this->size != tmp.size) || (this->startindex != tmp.startindex))
         return true;
     for (int i = 0; i < this->size; i++)
         if (this->arr[i] != tmp.arr[i])
