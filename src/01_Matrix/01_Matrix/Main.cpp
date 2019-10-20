@@ -14,4 +14,5 @@ void main()
     Tests7();//A * vec
     Tests8();//A == B
     Tests9();//A != B
+    Tests10();//конструктор копирования
 }
