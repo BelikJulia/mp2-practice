@@ -29,6 +29,7 @@ public:
     bool operator!=(const TVector& tmp)const;
     int GetSI()const;
     int GetSize()const;
+    void SetSI(int i);
 
     T& operator[] (int i);
     const T& operator[] (int i) const;
@@ -107,7 +108,7 @@ T TVector<T>::len() const
 template<typename T>
 TVector<T> TVector<T>::operator+(const T a)
 {
-    TVector<T> rez(this->size);
+    TVector<T> rez(*this);
     for (int i = 0; i < this->size; i++)
         rez.arr[i] += a;
     return rez;
@@ -116,7 +117,7 @@ TVector<T> TVector<T>::operator+(const T a)
 template<typename T>
 TVector<T> TVector<T>::operator-(const T a)
 {
-    TVector<T> rez(this->size);
+    TVector<T> rez(*this);
     for (int i = 0; i < this->size; i++)
         rez.arr[i] -= a;
     return rez;
@@ -125,7 +126,7 @@ TVector<T> TVector<T>::operator-(const T a)
 template<typename T>
 TVector<T> TVector<T>::operator*(const T a)
 {
-    TVector<T> rez(this->size);
+    TVector<T> rez(*this);
     for (int i = 0; i < this->size; i++)
         rez.arr[i] *= a;
     return rez;
@@ -213,4 +214,10 @@ template<typename T>
 int TVector<T>::GetSize()const
 {
     return this->size;
+}
+
+template<typename T>
+void TVector<T>::SetSI(int i)
+{
+    this->startindex = i;
 }

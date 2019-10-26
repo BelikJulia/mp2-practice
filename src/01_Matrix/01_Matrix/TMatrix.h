@@ -57,7 +57,7 @@ template<typename T>
 TMatrix<T>::~TMatrix() {}
 
 template<typename T>
-TMatrix<T>& TMatrix<T>::operator=(const TMatrix& tmp)
+TMatrix<T>& TMatrix<T>::operator=(const TMatrix<T>& tmp)
 {
     if (*this == tmp)
         return *this;
@@ -66,9 +66,12 @@ TMatrix<T>& TMatrix<T>::operator=(const TMatrix& tmp)
         this->size = tmp.size; 
         delete this->arr;
         this->arr = new TVector<T>[tmp.size];
-    } 
+    }
     for (int i = 0; i < this->size; i++)
+    {
         this->arr[i] = tmp.arr[i];
+        this->arr[i].SetSI(i);
+    }
     return *this;
 }
 
@@ -77,7 +80,9 @@ TMatrix<T> TMatrix<T>::operator+(const T a)
 {
     TMatrix<T> rez(this->size);
     for (int i = 0; i < this->size; i++)
+    {
         rez.arr[i] = this->arr[i] + a;
+    }
     return rez;
 }
 
@@ -133,13 +138,13 @@ bool TMatrix<T>::operator==(const TMatrix& tmp)const
 }
 
 template<typename T>
-bool TMatrix<T>::operator!=(const TMatrix& tmp)const
+bool TMatrix<T>::operator!=(const TMatrix<T>& tmp)const
 {
     return (!(*this == tmp));
 }
 
 template<typename T>
-TMatrix<T> TMatrix<T>::operator*(const TMatrix& tmp)
+TMatrix<T> TMatrix<T>::operator*(const TMatrix<T>& tmp)
 {
     if (this->size != tmp.size)
         throw "!size";

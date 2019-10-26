@@ -246,7 +246,7 @@ void Tests9()
 
 void Tests10()
 {
-    cout << "TEST 1" << endl << "A + B" << endl;
+    cout << "TEST 10" << endl << "A = B" << endl;
     int n;
     cout << "Size A = ";
     cin >> n;

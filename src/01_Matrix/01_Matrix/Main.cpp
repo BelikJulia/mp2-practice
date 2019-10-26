@@ -15,4 +15,6 @@ void main()
     Tests8();//A == B
     Tests9();//A != B
     Tests10();//конструктор копирования
+    int i;
+    cin >> i;
 }
