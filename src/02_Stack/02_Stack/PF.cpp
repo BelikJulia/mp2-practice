@@ -24,10 +24,25 @@ double PolF::DO(string tmp, double a, double b)
 bool PolF::IsD(string a)
 {
     for (int i = 0; i < a.length(); i++)
-        if ((a[i] != '0') || (a[i] != '1') || (a[i] != '2') || (a[i] != '3') || (a[i] != '4') ||
-            (a[i] != '5') || (a[i] != '6') || (a[i] != '7') || (a[i] != '8') || (a[i] != '9') || (a[i] != ' '))
+        if ((a[i] != '0') && (a[i] != '1') && (a[i] != '2') && (a[i] != '3') && (a[i] != '4') &&
+            (a[i] != '5') && (a[i] != '6') && (a[i] != '7') && (a[i] != '8') && (a[i] != '9') && (a[i] != ' '))
+        {
+            cout << a[i] << " not a number ";
             return false;
+        }
     return true;
+}
+
+bool PolF::IsPerem(string tmp, string* perem)
+{
+    for (int i = 0; i < 50; i++)
+    {
+        if (tmp == perem[i])
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 double PolF::StToD(string a)
@@ -38,34 +53,34 @@ double PolF::StToD(string a)
         switch (a[i])
         {
         case '0':
-            res += pow(10, (a.length() - i)) * 0;
+            res += pow(10, (a.length() - i - 1)) * 0;
             break;
         case '1':
-            res += pow(10, (a.length() - i)) * 1;
+            res += pow(10, (a.length() - i - 1)) * 1;
             break;
         case '2':
-            res += pow(10, (a.length() - i)) * 2;
+            res += pow(10, (a.length() - i - 1)) * 2;
             break;
         case '3':
-            res += pow(10, (a.length() - i)) * 3;
+            res += pow(10, (a.length() - i - 1)) * 3;
             break;
         case '4':
-            res += pow(10, (a.length() - i)) * 4;
+            res += pow(10, (a.length() - i - 1)) * 4;
             break;
         case '5':
-            res += pow(10, (a.length() - i)) * 5;
+            res += pow(10, (a.length() - i - 1)) * 5;
             break;
         case '6':
-            res += pow(10, (a.length() - i)) * 6;
+            res += pow(10, (a.length() - i - 1)) * 6;
             break;
         case '7':
-            res += pow(10, (a.length() - i)) * 7;
+            res += pow(10, (a.length() - i - 1)) * 7;
             break;
         case '8':
-            res += pow(10, (a.length() - i)) * 8;
+            res += pow(10, (a.length() - i - 1)) * 8;
             break;
         case '9':
-            res += pow(10, (a.length() - i)) * 9;
+            res += pow(10, (a.length() - i - 1)) * 9;
             break;
         default:
             break;
@@ -79,12 +94,9 @@ double PolF::znach(string a, string* perem, double* zn)
     for (int i = 0; i < 50; i++)
     {
         if (a == perem[i])
+        {
             return zn[i];
-    }
-    if (IsD(a))
-    {
-        double b = StToD(a);
-        return b;
+        }
     }
     return 0;
 }
@@ -330,15 +342,20 @@ double PolF::Count(string PF, string* perem, double* zn)
 
     for (int i = 0; i < PF.length(); i++)
     {
-        tmp = PF[i];
-        if (IsS(tmp[0]))
+        tmp += PF[i];
+        if (IsPerem(tmp, perem) || (IsS(tmp[0])))
         {
-            b = count.Pop();
-            a = count.Pop();
-            count.Push(DO(tmp, a, b));
+            if (IsS(tmp[0]))
+            {
+                b = count.Pop();
+                a = count.Pop();
+                count.Push(DO(tmp, a, b));
+            }
+            else
+                count.Push(znach(tmp, perem, zn));
+            tmp = "";
         }
-        else
-            count.Push(znach(tmp, perem, zn));
+
     }
     return count.Pop();
 }

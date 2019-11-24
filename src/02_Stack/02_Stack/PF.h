@@ -15,6 +15,7 @@ private:
     static int countof(string* perem);
     static bool IsD(string a);
     static double StToD(string a);
+    static bool IsPerem(string tmp, string* perem);
 public:
     static string PF(string st, string* perem);
     static void ZN(string* perem, double* zn);//ввод значений переменных

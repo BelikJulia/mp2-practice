@@ -20,6 +20,6 @@ void main()
     }
     cout << endl << pf << endl;
     PolF::ZN(perem, zn);
-    cout << PolF::Count(pf, perem, zn);
+    cout << endl << PolF::Count(pf, perem, zn);
     cin >> s;
 }
