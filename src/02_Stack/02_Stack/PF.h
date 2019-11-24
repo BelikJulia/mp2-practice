@@ -7,18 +7,16 @@ using namespace std;
 class PolF
 {
 private:
-    TStack<string> PF;
-    string* perem;
-    double* zn;
-    int sizeperem;
+    static bool IsS(char zn);
+    static double DO(string tmp, double a, double b);
+    static int Prior(string s);
+    static double znach(string a, string* perem, double* zn);//значение переменной а
+    static void Sign(string tmp, TStack<string>& s, TStack<string>& gl);
+    static int countof(string* perem);
+    static bool IsD(string a);
+    static double StToD(string a);
 public:
-    PolF(string st = NULL);
-    ~PolF();
-    void PrintPF();//вывод польской формы
-    void ZN();//ввод значений переменных
-    double Count();//подсчет значения
-    double znach(string a);
+    static string PF(string st, string* perem);
+    static void ZN(string* perem, double* zn);//ввод значений переменных
+    static double Count(string PF, string* perem, double* zn);//подсчет значения
 };
-
-void SpaceRemoval(string& tmp);
-bool IsS(char zn);

@@ -1,15 +1,15 @@
 #include "PF.h"
 #include <iostream>
-#include <cstring>
+#include <string>
 
 using namespace std;
 
-bool IsS(char zn)
+bool PolF::IsS(char zn)
 {
     return ((zn == '+') || (zn == '-') || (zn == '*') || (zn == '/'));
 }
 
-double DO(string tmp, double a, double b)
+double PolF::DO(string tmp, double a, double b)
 {
     switch (tmp[0])
     {
@@ -21,29 +21,75 @@ double DO(string tmp, double a, double b)
     }
 }
 
-void SpaceRemoval(string& tmp)
+bool PolF::IsD(string a)
 {
-    for (int i = 0; i < tmp.length(); i++)
-    {
-        if (tmp[i] == ' ')
-        {
-            for (int j = i; tmp[j] != '/n'; j++)
-                tmp[j] = tmp[j + 1];
-        }
-    }
+    for (int i = 0; i < a.length(); i++)
+        if ((a[i] != '0') || (a[i] != '1') || (a[i] != '2') || (a[i] != '3') || (a[i] != '4') ||
+            (a[i] != '5') || (a[i] != '6') || (a[i] != '7') || (a[i] != '8') || (a[i] != '9') || (a[i] != ' '))
+            return false;
+    return true;
 }
 
-double PolF::znach(string a)
+double PolF::StToD(string a)
 {
-    for (int i = 0; i < sizeperem; i++)
+    double res = 0;
+    for (int i = 0; i < a.length(); i++)
+    {
+        switch (a[i])
+        {
+        case '0':
+            res += pow(10, (a.length() - i)) * 0;
+            break;
+        case '1':
+            res += pow(10, (a.length() - i)) * 1;
+            break;
+        case '2':
+            res += pow(10, (a.length() - i)) * 2;
+            break;
+        case '3':
+            res += pow(10, (a.length() - i)) * 3;
+            break;
+        case '4':
+            res += pow(10, (a.length() - i)) * 4;
+            break;
+        case '5':
+            res += pow(10, (a.length() - i)) * 5;
+            break;
+        case '6':
+            res += pow(10, (a.length() - i)) * 6;
+            break;
+        case '7':
+            res += pow(10, (a.length() - i)) * 7;
+            break;
+        case '8':
+            res += pow(10, (a.length() - i)) * 8;
+            break;
+        case '9':
+            res += pow(10, (a.length() - i)) * 9;
+            break;
+        default:
+            break;
+        }
+    }
+    return res;
+}
+
+double PolF::znach(string a, string* perem, double* zn)
+{
+    for (int i = 0; i < 50; i++)
     {
         if (a == perem[i])
             return zn[i];
     }
+    if (IsD(a))
+    {
+        double b = StToD(a);
+        return b;
+    }
     return 0;
 }
 
-int Prior(string s)
+int PolF::Prior(string s)
 {
     switch (s[0])
     {
@@ -55,33 +101,68 @@ int Prior(string s)
     }
 }
 
-void Sign(string tmp, TStack<string>& s)
+void PolF::Sign(string tmp, TStack<string>& s, TStack<string>& gl)
 {
-    string st = s.Pop();
-    if (Prior(st) < Prior(tmp))
+    string st;
+    TStack<string> oper(50);
+    if (!(s.IsEmpty()))
     {
-        s.Push(st);
-        s.Push(tmp);
+        do
+        {
+            try
+            {
+                st = s.Pop();
+            }
+            catch (const char* er)
+            {
+                cout << er << " in Sign f in do " << endl;
+            }
+            if (Prior(st) < Prior(tmp))
+            {
+                oper.Push(st);
+            }
+            else
+            {
+                s.Push(st);
+                s.Push(tmp);
+            }
+            try
+            {
+                if (!(s.IsEmpty()))
+                {
+                    st = s.Pop();
+                    s.Push(st);
+                }
+            }
+            catch (const char* er)
+            {
+                cout << er << " in Sign f " << endl;
+            }
+        } while ((Prior(st) < Prior(tmp)) && (!(s.IsEmpty())));
+        if (!(oper.IsEmpty()))
+        {
+            s.Push(tmp);
+            do
+            {
+                gl.Push(oper.Pop());
+            } while (!(oper.IsEmpty()));
+        }
     }
     else
     {
-        s.Push(st);
         s.Push(tmp);
     }
-};
+}
 
-PolF::PolF(string st)
+string PolF::PF(string st, string* perem)
 {
     if (st == "")
         throw "!empty line";
-    SpaceRemoval(st);
-    string tmp = "", per = "";
-    int j = 0;
-    sizeperem = 0;
-    perem = new string[st.length()];
-    zn = new double[st.length()];
-    PF = TStack<string>(st.length());
-    TStack<string> oper(st.length());
+    string tmp = "", per = "";//тмп - входной элемент строки в форе, пер - переменная до знака
+    int j = 0;//счетчик для массива переменных
+    TStack<string> PF(50);
+    string pf = "";//итоговая строка
+    TStack<string> oper(50);
     for (int i = 0; i < st.length(); i++)
     {
         tmp = st[i];
@@ -92,43 +173,50 @@ PolF::PolF(string st)
                 if (per != "")
                 {
                     perem[j++] = per;
+                    reverse(per.begin(), per.end());
                     PF.Push(per);
-                    sizeperem++;
+                    per = "";
                 }
             }
             catch (const char* er)
             {
-                cout << er << endl;
+                cout << er << " in Sign " << endl;
             }
             try
             {
-                if (tmp != "(")
-                    Sign(tmp, oper);
+                if ((tmp != "(") && (!(oper.IsEmpty())))
+                {
+                    Sign(tmp, oper, PF);
+                }
                 else
+                {
                     oper.Push(tmp);
+                }
             }
             catch (const char* er)
             {
-                cout << er << endl;
+                cout << er << " in oper" << endl;
             }
         }
         else if (st[i] == ')')
         {
             string z = oper.Pop();
+            try
+            {
+                if (per != "")
+                {
+                    perem[j++] = per;
+                    reverse(per.begin(), per.end());
+                    PF.Push(per);
+                    per = "";
+                }
+            }
+            catch (const char* er)
+            {
+                cout << er << endl;
+            }
             do
             {
-                try
-                {
-                    if (per != "")
-                    {
-                        perem[j++] = per;
-                        PF.Push(per);
-                    }
-                }
-                catch (const char* er)
-                {
-                    cout << er << endl;
-                }
                 try
                 {
                     PF.Push(z);
@@ -148,72 +236,109 @@ PolF::PolF(string st)
             } while (z != "(");
         }
         else
+        {
             per += tmp;
+        }
     }
-    oper.Push("0");
-    string z = oper.Pop();
+    try
+    {
+        if (per != "")
+        {
+            perem[j++] = per;
+            reverse(per.begin(), per.end());
+            PF.Push(per);
+            per = "";
+        }
+    }
+    catch (const char* er)
+    {
+        cout << er << endl;
+    }
+    string z;
     do
     {
-        try
-        {
-            PF.Push(z);
-        }
-        catch (const char* er)
-        {
-            cout << er << endl;
-        }
         try
         {
             z = oper.Pop();
         }
         catch (const char* er)
         {
-            cout << er << endl;
+            cout << er << " in end  in do " << endl;
         }
-    } while (z != "0");
-}
-
-PolF::~PolF()
-{
-    delete perem;
-    delete zn;
-    sizeperem = 0;
-}
-
-void PolF::PrintPF()
-{
-    cout << PF << endl;
-}
-
-void PolF::ZN()
-{
-    for (int i = 0; i < sizeperem; i++)
+        try
+        {
+            PF.Push(z);
+        }
+        catch (const char* er)
+        {
+            cout << er << " in Push in end " << endl;
+        }
+    } while (!(oper.IsEmpty()));
+    while (!(PF.IsEmpty()))
     {
-        cout << perem[i] << " = ";
-        cin >> zn[i];
-        cout << endl;
+        pf += PF.Pop();
+    }
+    reverse(pf.begin(), pf.end());
+    return pf;
+}
+
+int PolF::countof(string* perem)
+{
+    int i = 0;
+    while (perem[i] != "")
+        i++;
+    return i;
+}
+
+void PolF::ZN(string* perem, double* zn)
+{
+    int flag = 0;
+    for (int i = 0; i < countof(perem); i++)
+    {
+        if (IsD(perem[i]))
+        {
+            zn[i] = StToD(perem[i]);
+            flag = 1;
+        }
+        else
+        {
+            for (int j = i - 1; j >= 0; j--)
+            {
+                if (perem[i] == perem[j])
+                {
+                    flag = 1;
+                    zn[i] = zn[j];
+                    break;
+                }
+            }
+            if (flag == 0)
+            {
+                cout << perem[i] << " = ";
+                cin >> zn[i];
+                cout << endl;
+            }
+        }
+        flag = 0;
     }
 }
 
-double PolF::Count()
+double PolF::Count(string PF, string* perem, double* zn)
 {
-    TStack<string> res(50);
     TStack<double> count(50);
     string tmp;
     double a, b;
-    for (int i = 0; i < PF.GetSize(); i++)
-        res.Push(PF.Pop());
-    for (int i = 0; i < PF.GetSize(); i++)
+
+    for (int i = 0; i < PF.length(); i++)
     {
-        tmp = res.Pop();
+        tmp = PF[i];
         if (IsS(tmp[0]))
         {
-            a = count.Pop();
             b = count.Pop();
+            a = count.Pop();
             count.Push(DO(tmp, a, b));
         }
         else
-            count.Push(znach(tmp));
+            count.Push(znach(tmp, perem, zn));
     }
     return count.Pop();
 }
