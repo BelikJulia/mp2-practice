@@ -9,7 +9,7 @@ void main()
     string s, pf;//исходная строка и польская форма 
     string* perem = new string[50]{ "" };//массив элементов
     double* zn = new double[50];
-    cin >> s;
+    getline(std::cin, s);
     try
     {
         pf = PolF::PF(s, perem);

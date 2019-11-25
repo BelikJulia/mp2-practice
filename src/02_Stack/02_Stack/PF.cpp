@@ -9,6 +9,24 @@ bool PolF::IsS(char zn)
     return ((zn == '+') || (zn == '-') || (zn == '*') || (zn == '/'));
 }
 
+bool PolF::IsCorrect(string st)
+{
+    int a = 0;
+    int b = 0;
+    for (int i = 0; i < st.length(); i++)
+    {
+        if (st[i] == '(')
+            a++;
+        if (st[i] == ')')
+            b++;
+        if (b > a)
+            return false;
+    }
+    if (a != b)
+        return false;
+    return true;
+}
+
 double PolF::DO(string tmp, double a, double b)
 {
     switch (tmp[0])
@@ -27,7 +45,7 @@ bool PolF::IsD(string a)
         if ((a[i] != '0') && (a[i] != '1') && (a[i] != '2') && (a[i] != '3') && (a[i] != '4') &&
             (a[i] != '5') && (a[i] != '6') && (a[i] != '7') && (a[i] != '8') && (a[i] != '9') && (a[i] != ' '))
         {
-            cout << a[i] << " not a number ";
+            //cout << a[i] << " not a number ";
             return false;
         }
     return true;
@@ -105,11 +123,11 @@ int PolF::Prior(string s)
 {
     switch (s[0])
     {
-    case '*': return 1;
+    case '*': return 2;
     case '/': return 1;
-    case '+': return 2;
-    case '-': return 2;
-    default: return 3;
+    case '+': return 4;
+    case '-': return 3;
+    default: return 5;
     }
 }
 
@@ -170,6 +188,8 @@ string PolF::PF(string st, string* perem)
 {
     if (st == "")
         throw "!empty line";
+    if (!(IsCorrect(st)))
+        throw "!invalid line";
     string tmp = "", per = "";//тмп - входной элемент строки в форе, пер - переменная до знака
     int j = 0;//счетчик для массива переменных
     TStack<string> PF(50);
@@ -178,78 +198,81 @@ string PolF::PF(string st, string* perem)
     for (int i = 0; i < st.length(); i++)
     {
         tmp = st[i];
-        if (IsS(st[i]) || (st[i] == '('))
+        if (tmp != " ")
         {
-            try
-            {
-                if (per != "")
-                {
-                    perem[j++] = per;
-                    reverse(per.begin(), per.end());
-                    PF.Push(per);
-                    per = "";
-                }
-            }
-            catch (const char* er)
-            {
-                cout << er << " in Sign " << endl;
-            }
-            try
-            {
-                if ((tmp != "(") && (!(oper.IsEmpty())))
-                {
-                    Sign(tmp, oper, PF);
-                }
-                else
-                {
-                    oper.Push(tmp);
-                }
-            }
-            catch (const char* er)
-            {
-                cout << er << " in oper" << endl;
-            }
-        }
-        else if (st[i] == ')')
-        {
-            string z = oper.Pop();
-            try
-            {
-                if (per != "")
-                {
-                    perem[j++] = per;
-                    reverse(per.begin(), per.end());
-                    PF.Push(per);
-                    per = "";
-                }
-            }
-            catch (const char* er)
-            {
-                cout << er << endl;
-            }
-            do
+            if (IsS(st[i]) || (st[i] == '('))
             {
                 try
                 {
-                    PF.Push(z);
+                    if (per != "")
+                    {
+                        perem[j++] = per;
+                        reverse(per.begin(), per.end());
+                        PF.Push(per);
+                        per = "";
+                    }
+                }
+                catch (const char* er)
+                {
+                    cout << er << " in Sign " << endl;
+                }
+                try
+                {
+                    if ((tmp != "(") && (!(oper.IsEmpty())))
+                    {
+                        Sign(tmp, oper, PF);
+                    }
+                    else
+                    {
+                        oper.Push(tmp);
+                    }
+                }
+                catch (const char* er)
+                {
+                    cout << er << " in oper" << endl;
+                }
+            }
+            else if (st[i] == ')')
+            {
+                string z = oper.Pop();
+                try
+                {
+                    if (per != "")
+                    {
+                        perem[j++] = per;
+                        reverse(per.begin(), per.end());
+                        PF.Push(per);
+                        per = "";
+                    }
                 }
                 catch (const char* er)
                 {
                     cout << er << endl;
                 }
-                try
+                do
                 {
-                    z = oper.Pop();
-                }
-                catch (const char* er)
-                {
-                    cout << er << endl;
-                }
-            } while (z != "(");
-        }
-        else
-        {
-            per += tmp;
+                    try
+                    {
+                        PF.Push(z);
+                    }
+                    catch (const char* er)
+                    {
+                        cout << er << endl;
+                    }
+                    try
+                    {
+                        z = oper.Pop();
+                    }
+                    catch (const char* er)
+                    {
+                        cout << er << endl;
+                    }
+                } while (z != "(");
+            }
+            else
+            {
+                per += tmp;
+            }
         }
     }
     try
