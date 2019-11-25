@@ -6,20 +6,22 @@ using namespace std;
 
 void main()
 {
-    string s, pf;//исходная строка и польская форма 
-    string* perem = new string[50]{ "" };//массив элементов
-    double* zn = new double[50];
+    string s; string pf;//исходная строка и польская форма 
+    
     getline(std::cin, s);
     try
     {
-        pf = PolF::PF(s, perem);
+        pf = PolF::PF(s);
+        cout << endl << pf << endl;
+        string* perem;//массив элементов
+        double* zn;
+        int count;
+        PolF::ZN(pf, perem, zn, &count);
+        cout << endl << PolF::Count(pf, perem, zn);
     }
     catch (const char* er)
     {
         cout << er << endl;
     }
-    cout << endl << pf << endl;
-    PolF::ZN(perem, zn);
-    cout << endl << PolF::Count(pf, perem, zn);
-    cin >> s;
+    cin >> s;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

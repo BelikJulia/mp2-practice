@@ -16,25 +16,9 @@ public:
     ~TStack();
     void Push(VT a);
     VT Pop();
-    VT NPop();
     TStack& operator=(const TStack& tmp);
-    bool IsFull();
-    bool IsEmpty();
-    int GetSize();
-
-    friend istream& operator>>(istream& in, TStack<VT>& s)
-    {
-        top = size;
-        for (int i = 0; i < s.size; i++)
-            in >> s.elems[i];
-        return in;
-    }
-    friend ostream& operator<<(ostream& out, const TStack<VT>& s)
-    {
-        for (int i = 0; i < s.top; i++)
-            out << s.elems[i];
-        return out;
-    }
+    bool IsFull()const;
+    bool IsEmpty()const;
 };
 
 template <class VT>
@@ -81,25 +65,15 @@ VT TStack<VT>::Pop()
     return elems[--top];
 }
 
-template <class VT>
-VT TStack<VT>::NPop()
-{
-    if (this->IsEmpty())
-        throw "Is Empty";
-    VT res = elems[0];
-    for (int i = 0; i < top - 1; i++)
-        elems[i] = elems[i + 1];
-    return res;
-}
 
 template <class VT>
-bool TStack<VT>::IsFull()
+bool TStack<VT>::IsFull()const
 {
     return (top == size);
 }
 
 template <class VT>
-bool TStack<VT>::IsEmpty()
+bool TStack<VT>::IsEmpty()const
 {
     return (top == 0);
 }
@@ -118,10 +92,4 @@ TStack<VT>& TStack<VT>::operator=(const TStack<VT>& tmp)
         elems[i] = tmp.elems[i];
     }
     return *this;
-}
-
-template <class VT>
-int TStack<VT>::GetSize()
-{
-    return size;
 }

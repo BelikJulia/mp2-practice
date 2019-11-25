@@ -1,7 +1,6 @@
 #include "PF.h"
 #include <iostream>
 #include <string>
-
 using namespace std;
 
 bool PolF::IsS(char zn)
@@ -51,54 +50,45 @@ bool PolF::IsD(string a)
     return true;
 }
 
-bool PolF::IsPerem(string tmp, string* perem)
-{
-    for (int i = 0; i < 50; i++)
-    {
-        if (tmp == perem[i])
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
 double PolF::StToD(string a)
 {
     double res = 0;
     for (int i = 0; i < a.length(); i++)
     {
+        double s = 1;
+        for (int j = 1; j < a.length() - i; j++)
+            s *= 10;
         switch (a[i])
         {
         case '0':
-            res += pow(10, (a.length() - i - 1)) * 0;
+            res += s * 0;
             break;
         case '1':
-            res += pow(10, (a.length() - i - 1)) * 1;
+            res += s * 1;
             break;
         case '2':
-            res += pow(10, (a.length() - i - 1)) * 2;
+            res += s * 2;
             break;
         case '3':
-            res += pow(10, (a.length() - i - 1)) * 3;
+            res += s * 3;
             break;
         case '4':
-            res += pow(10, (a.length() - i - 1)) * 4;
+            res += s * 4;
             break;
         case '5':
-            res += pow(10, (a.length() - i - 1)) * 5;
+            res += s * 5;
             break;
         case '6':
-            res += pow(10, (a.length() - i - 1)) * 6;
+            res += s * 6;
             break;
         case '7':
-            res += pow(10, (a.length() - i - 1)) * 7;
+            res += s * 7;
             break;
         case '8':
-            res += pow(10, (a.length() - i - 1)) * 8;
+            res += s * 8;
             break;
         case '9':
-            res += pow(10, (a.length() - i - 1)) * 9;
+            res += s * 9;
             break;
         default:
             break;
@@ -184,7 +174,7 @@ void PolF::Sign(string tmp, TStack<string>& s, TStack<string>& gl)
     }
 }
 
-string PolF::PF(string st, string* perem)
+string PolF::PF(string st)
 {
     if (st == "")
         throw "!empty line";
@@ -206,7 +196,7 @@ string PolF::PF(string st, string* perem)
                 {
                     if (per != "")
                     {
-                        perem[j++] = per;
+                        per += " ";
                         reverse(per.begin(), per.end());
                         PF.Push(per);
                         per = "";
@@ -239,7 +229,7 @@ string PolF::PF(string st, string* perem)
                 {
                     if (per != "")
                     {
-                        perem[j++] = per;
+                        per += " ";
                         reverse(per.begin(), per.end());
                         PF.Push(per);
                         per = "";
@@ -279,7 +269,7 @@ string PolF::PF(string st, string* perem)
     {
         if (per != "")
         {
-            perem[j++] = per;
+            per += " ";
             reverse(per.begin(), per.end());
             PF.Push(per);
             per = "";
@@ -317,57 +307,82 @@ string PolF::PF(string st, string* perem)
     return pf;
 }
 
-int PolF::countof(string* perem)
+void PolF::ZN(string PF, string*& perem, double*& zn, int* count)
 {
-    int i = 0;
-    while (perem[i] != "")
-        i++;
-    return i;
-}
-
-void PolF::ZN(string* perem, double* zn)
-{
+    string tmp = "";
     int flag = 0;
-    for (int i = 0; i < countof(perem); i++)
+    int p = 0;
+    for (int i = 0; i < PF.length(); i++)
     {
-        if (IsD(perem[i]))
+        if (PF[i] != ' ')
         {
-            zn[i] = StToD(perem[i]);
-            flag = 1;
+            tmp += PF[i];
         }
         else
         {
-            for (int j = i - 1; j >= 0; j--)
+            if (!(IsS(tmp[0])))
+                p++;
+            tmp = "";
+        }
+    }
+    tmp = ""; 
+    p = 0;
+    perem = new string[p];
+    for (int i = 0; i < p; i++)
+        perem[i] = "";
+    zn = new double[p];
+    for (int i = 0; i < PF.length(); i++)
+    {
+        if (PF[i] != ' ')
+            tmp += PF[i];
+        else
+        {
+            if (!(IsS(tmp[0])))
             {
-                if (perem[i] == perem[j])
+                flag = 0;
+                for (int j = (p - 1); j >= 0; j--)
                 {
-                    flag = 1;
-                    zn[i] = zn[j];
-                    break;
+                    if (tmp == perem[j])
+                    {
+                        flag = 1;
+                    }
+                }
+                if (flag == 0)
+                {
+                    if (IsD(tmp))
+                    {
+                        perem[p] = tmp;
+                        zn[p++] = StToD(tmp);
+                    }
+                    else
+                    {
+                        perem[p] = tmp;
+                        cout << perem[p] << " = ";
+                        cin >> zn[p++];
+                        cout << endl;
+                    }
                 }
             }
-            if (flag == 0)
-            {
-                cout << perem[i] << " = ";
-                cin >> zn[i];
-                cout << endl;
-            }
+            tmp = "";
         }
-        flag = 0;
     }
+    *count = p;
+ /*   for (int i = 0; i < p; i++)
+        cout << perem[i] << " = " << zn[i] << endl;*/
 }
 
 double PolF::Count(string PF, string* perem, double* zn)
 {
     TStack<double> count(50);
-    string tmp;
+    string tmp, tmp1;
     double a, b;
 
     for (int i = 0; i < PF.length(); i++)
     {
-        tmp += PF[i];
-        if (IsPerem(tmp, perem) || (IsS(tmp[0])))
+        tmp1 = PF[i];
+        if (tmp1 == " ")
         {
+            tmp += tmp1;
             if (IsS(tmp[0]))
             {
                 b = count.Pop();
@@ -378,7 +393,6 @@ double PolF::Count(string PF, string* perem, double* zn)
                 count.Push(znach(tmp, perem, zn));
             tmp = "";
         }
-
     }
     return count.Pop();
 }
