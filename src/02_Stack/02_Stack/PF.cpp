@@ -43,10 +43,7 @@ bool PolF::IsD(string a)
     for (int i = 0; i < a.length(); i++)
         if ((a[i] != '0') && (a[i] != '1') && (a[i] != '2') && (a[i] != '3') && (a[i] != '4') &&
             (a[i] != '5') && (a[i] != '6') && (a[i] != '7') && (a[i] != '8') && (a[i] != '9') && (a[i] != ' '))
-        {
-            //cout << a[i] << " not a number ";
             return false;
-        }
     return true;
 }
 
@@ -196,7 +193,6 @@ string PolF::PF(string st)
                 {
                     if (per != "")
                     {
-                        per += " ";
                         reverse(per.begin(), per.end());
                         PF.Push(per);
                         per = "";
@@ -229,7 +225,6 @@ string PolF::PF(string st)
                 {
                     if (per != "")
                     {
-                        per += " ";
                         reverse(per.begin(), per.end());
                         PF.Push(per);
                         per = "";
@@ -269,7 +264,6 @@ string PolF::PF(string st)
     {
         if (per != "")
         {
-            per += " ";
             reverse(per.begin(), per.end());
             PF.Push(per);
             per = "";
@@ -301,7 +295,7 @@ string PolF::PF(string st)
     } while (!(oper.IsEmpty()));
     while (!(PF.IsEmpty()))
     {
-        pf += PF.Pop();
+        pf += (" " + PF.Pop());
     }
     reverse(pf.begin(), pf.end());
     return pf;
@@ -325,12 +319,12 @@ void PolF::ZN(string PF, string*& perem, double*& zn, int* count)
             tmp = "";
         }
     }
-    tmp = ""; 
-    p = 0;
-    perem = new string[p];
+    tmp = "";
+    perem = new string[p]; 
     for (int i = 0; i < p; i++)
         perem[i] = "";
-    zn = new double[p];
+    zn = new double[p]; 
+    p = 0;
     for (int i = 0; i < PF.length(); i++)
     {
         if (PF[i] != ' ')
@@ -367,8 +361,6 @@ void PolF::ZN(string PF, string*& perem, double*& zn, int* count)
         }
     }
     *count = p;
- /*   for (int i = 0; i < p; i++)
-        cout << perem[i] << " = " << zn[i] << endl;*/
 }
 
 double PolF::Count(string PF, string* perem, double* zn)
@@ -382,7 +374,6 @@ double PolF::Count(string PF, string* perem, double* zn)
         tmp1 = PF[i];
         if (tmp1 == " ")
         {
-            tmp += tmp1;
             if (IsS(tmp[0]))
             {
                 b = count.Pop();
@@ -393,6 +384,8 @@ double PolF::Count(string PF, string* perem, double* zn)
                 count.Push(znach(tmp, perem, zn));
             tmp = "";
         }
+        else
+            tmp += tmp1;
     }
     return count.Pop();
 }
