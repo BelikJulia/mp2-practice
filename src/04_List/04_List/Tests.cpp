@@ -22,7 +22,14 @@ void Tests1()//Поиск
     cout << list;
     cout << "Search key ";
     cin >> key;
-    cout << list.Search(key) << endl << "Test 1 passed" << endl << endl;
+    if (list.Search(key) != 0)
+    {
+        cout << *(list.Search(key)) << endl << "Test 1 passed" << endl << endl;
+    }
+    else
+    {
+        cout << "No elem" << endl << "Test 1 passed" << endl << endl;
+    }
 }
 void Tests2()//Вставка в конец
 {
@@ -189,7 +196,7 @@ void Tests7()//Конструктор копирования
         cin >> data;
         list.Back(key, &data);
     }
-    cout << list;
+    cout << list << endl;
 
     TList<double, char> list2(list);
     cout << list2;
