@@ -81,8 +81,6 @@ bool TStack<VT>::IsEmpty()const
 template<class VT>
 TStack<VT>& TStack<VT>::operator=(const TStack<VT>& tmp)
 {
-    /*if (*this == tmp)
-        return *this;*/
     size = tmp.size;
     top = tmp.top;
     delete[] elems;

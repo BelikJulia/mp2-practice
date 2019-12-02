@@ -18,10 +18,11 @@ void main()
         int count;
         PolF::ZN(pf, perem, zn, &count);
         cout << endl << PolF::Count(pf, perem, zn);
+        delete[] zn;
+        delete[] perem;
     }
     catch (const char* er)
     {
         cout << er << endl;
     }
-    cin >> s;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
