@@ -167,7 +167,7 @@ void Tests6()//Удаление
         list.Back(key, &data);
     }
     cout << list;
-    cout << " Push key ";
+    cout << " Remove key ";
     cin >> key;
     try
     {
