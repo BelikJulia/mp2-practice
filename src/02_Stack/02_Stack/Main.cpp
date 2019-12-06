@@ -7,7 +7,7 @@ using namespace std;
 void main()
 {
     string s; string pf;//исходная строка и польская форма 
-    
+    cout << "Enter arithmetic expression: ";
     getline(std::cin, s);
     try
     {
@@ -24,5 +24,5 @@ void main()
     catch (const char* er)
     {
         cout << er << endl;
-    }
+    } cin >> s;
 }
