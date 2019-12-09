@@ -206,6 +206,7 @@ void TList<Tkey, TData>::Back(Tkey _key, TData* _pData)
             Next();
         pCurr = new TNode<Tkey, TData>(_key, _pData);
         pPrev->pNext = pCurr;
+        
         pPrev = pprev;
         pCurr = pcurr;
         pNext = pnext;
@@ -217,11 +218,8 @@ void TList<Tkey, TData>::Push(Tkey _key, TData* _pData)
 {
     TNode<Tkey, TData>* tmp = new TNode<Tkey, TData>(_key, _pData, pFirst);
     if (pCurr == pFirst)
-    {
-        pCurr = tmp;
-        pNext = tmp->pNext;
-        //pPrev = NULL;
-        pPrev->pNext = pCurr;
+    {        
+        pPrev = tmp;
     }
     pFirst = tmp;
 }
@@ -271,10 +269,8 @@ void TList<Tkey, TData>::InsertBefore(TData* _pData, Tkey _key, Tkey _keys)
     {
         TNode<Tkey, TData>* tmp = new TNode<Tkey, TData>(_key, _pData, pFirst);
         if (pcurr == pFirst)
-        {
-            pCurr = tmp;
-            pPrev->pNext = tmp;
-            pNext = pFirst;
+        {            
+            pPrev = tmp;
         }
         else
         {
@@ -314,7 +310,7 @@ void TList<Tkey, TData>::Remove(Tkey _key)//tecuch udal
     {
         if (pcurr == pFirst)
         {
-            if (pNext->pNext != 0)
+            if (pNext == 0)
             {
                 pNext = pNext->pNext;
             }
@@ -332,7 +328,7 @@ void TList<Tkey, TData>::Remove(Tkey _key)//tecuch udal
         delete pCurr;
         pCurr = pnext;
         pPrev->pNext = pCurr;
-        if (pNext->pNext != 0)
+        if (pNext == 0)
         {
             pNext = pNext->pNext;
         }
@@ -342,7 +338,7 @@ void TList<Tkey, TData>::Remove(Tkey _key)//tecuch udal
     pPrev->pNext = pCurr->pNext;
     delete pCurr;    
     pCurr = pNext;
-    if (pNext != 0)
+    if (pNext == 0)
     {
         pNext = pNext->pNext;
     }
