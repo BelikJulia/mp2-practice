@@ -42,7 +42,10 @@ TNode<Tkey, TData>::TNode(Tkey _key, TData _data, TNode* next)
 }
 template <class Tkey, class TData>
 TNode<Tkey, TData>::~TNode()
-{}
+{
+    key = NULL;
+    pData = NULL;
+}
 
 template <class TNode>
 class TList
@@ -123,7 +126,16 @@ template <class TNode>
 TList<TNode>::~TList()
 {
     Reset();
+    while (!IsEnded())
+    {
+        Next();
+        delete pPrev;
+    }
+    delete pCurr;
     pFirst = NULL;
+    pCurr = NULL;
+    pPrev = NULL;
+    pNext = NULL;
 }
 template <class TNode>
 bool TList<TNode>::IsEnded()const
@@ -144,6 +156,7 @@ template <class TNode>
 void TList<TNode>::Reset()
 {
     pPrev = NULL;
+    //pPrev->pNext = pFirst;
     pCurr = pFirst;
     if (pFirst != NULL)
     {
@@ -163,7 +176,7 @@ TNode* TList<TNode>::Search(TNode tmp)
     if (IsEnded())
     {
         Reset();
-        return 0;
+        return NULL;
     }
     return pCurr;
 }
@@ -209,7 +222,7 @@ void TList<TNode>::InsertAfter(TNode s, TNode n)
     TNode* pcurr = pCurr;
     TNode* pnext = pNext;
 
-    if (Search(s.key) == 0)
+    if (Search(s) == NULL)
     {
         pPrev = pprev;
         pCurr = pcurr;
@@ -232,7 +245,7 @@ void TList<TNode>::InsertBefore(TNode s, TNode n)
     TNode* pcurr = pCurr;
     TNode* pnext = pNext;
 
-    if (Search(s) == 0)
+    if (Search(s) == NULL)
     {
         pPrev = pprev;
         pCurr = pcurr;
