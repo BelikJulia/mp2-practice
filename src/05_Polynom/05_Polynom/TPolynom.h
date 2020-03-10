@@ -55,5 +55,11 @@ public:
         tmp.pol->pNext = pnext;
         return out;
     }
-    //перегрузка ввода
+    /*friend istream& operator>>(istream& in, TPolynom& tmp)
+    {
+        string st;
+        getline(in, st);
+        tmp = TPolynom(st);
+        return in;
+    }*/
 };
