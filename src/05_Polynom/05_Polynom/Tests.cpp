@@ -77,13 +77,13 @@ void Test4()
 {
     string st = "26x^3y^2z^2+2y^3-3x^4";
     cout << "Polynom = ";
-    //cin >> st;
+    cin >> st;
     try
     {
         TPolynom a(st);
         cout << "a = " <<a << endl;
         st = "-26x^2y^2+5";
-        //cin >> st;
+        cin >> st;
         TPolynom b(st);
         cout << "b = " << b << endl;
         TPolynom c;
@@ -95,14 +95,12 @@ void Test4()
         cout << er;
     }
     cout << "Test 4 passed" << endl << endl;
-    cin >> st;
+    //cin >> st;
 }
 
 void Test5()
 {
     TNode<unsigned int, double> a = TNode<unsigned int, double>(23, 46, NULL);
-    //TNode<unsigned int, double> b = TNode<unsigned int, double>(101, 2, NULL);
-    //TNode<unsigned int, double> c;
     string st = "26x^3y^2z^2+2y^3-3x^4";
     TPolynom b(st);
     TPolynom c;
